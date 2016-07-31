@@ -2,25 +2,52 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use \LaravelDoctrine\ORM\Auth\Authenticatable as AuthenticatableTrait;
+use Doctrine\ORM\Mapping as ORM;
 
-class User extends Authenticatable
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="users")
+ */
+
+class User implements AuthenticatableContract
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    use AuthenticatableTrait;
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+
+    private $name;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+
+    protected $email;
+
+    public function __construct($name, $email, $password)
+    {
+        $this->name = $name;
+        $this->email  = $email;
+        $this->password = $password;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
 }
