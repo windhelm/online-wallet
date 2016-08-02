@@ -62,9 +62,9 @@ class Application{
     {
         // if argument count > 1
         if ($argc > 0) {
-            if (in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
-                echo "help\n he";
-                return true;
+            if (in_array($argv[1], array('--help', '-help','help', '-h', '-?'))) {
+                echo "### Commands example ###\n\nlogin: php wallet.php login 'bakkker@mail.ru' 123456 -- login to system\nlogout: php wallet.php logout -- logout\nlogout: php wallet.php status -- show wallets and capitals\nbalance: php wallet.php balance 1b1085f0-57c0-11e6-8f97-5375de0d704d USD -- show the balance in the currency translation\nIncreaseAmount: php wallet.php increaseAmount 1b1085f0-57c0-11e6-8f97-5375de0d704d USD -- increase amount\nDecreaseAmount: php wallet.php decreaseAmount 1b1085f0-57c0-11e6-8f97-5375de0d704d USD -- decrease amount\n";
+                return false;
             }
 
             $command = $argv[1];
@@ -155,19 +155,18 @@ class Application{
                 if ($result->auth){
 
                     $algorithm = $this->getConvertAlgorithm();
-                    $algorithm->init();
+                    if ($algorithm->init()){
+                        $currency = $argv[3];
+                        $capitals = $result->capitals;
+                        $result = $algorithm->convert($currency,$capitals);
 
-                    $currency = $argv[3];
-                    $capitals = $result->capitals;
-                    $result = $algorithm->convert($currency,$capitals);
-
-                    echo $argv[2]."\n"."summ: ".$result."($argv[3])";
-
+                        echo $argv[2]."\n"."summ: ".$result."($argv[3])";
+                    }else{
+                        echo "error: not connected to http://www.cbr.ru";
+                    }
                 }else{
                     echo "error: "."no login, please login";
                 }
-
-
                 break;
             case "login":
                 $data = array(
