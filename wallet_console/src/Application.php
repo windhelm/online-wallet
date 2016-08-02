@@ -15,7 +15,7 @@ class Application{
     protected $routes = [
         "logout" => "wallet/logout",
         "login" => "wallet/login",
-        "status" => "wallet/get",
+        "status" => "wallet/status",
         "increaseAmount" => "wallet/increaseamount",
         "decreaseAmount" => "wallet/decreaseamount"
     ];
@@ -104,8 +104,6 @@ class Application{
                     }
 
                     break;
-                default:
-                    echo "unknown command";
             }
 
             return true;
