@@ -24,25 +24,25 @@ cd ./wallet_console
 
 ###example
 
-[Help]
+#### Help
 
 ```shell
 php wallet.php help
 ```
 
-[Login]
+#### Login
 
 ```shell
 php wallet.php login "bakkker@mail.ru" 123456
 ```
 
-[Logout]
+#### Logout
 
 ```shell
 php wallet.php logout
 ```
 
-[Status]
+#### Status
 
 Show all wallets user
 
@@ -50,7 +50,7 @@ Show all wallets user
 php wallet.php status
 ```
 
-[Balance]
+#### Balance
 
 show the balance in the currency translation
 
@@ -58,7 +58,7 @@ show the balance in the currency translation
 php wallet.php balance 1b1085f0-57c0-11e6-8f97-5375de0d704d USD
 ```
 
-[IncreaseAmount]
+#### IncreaseAmount
 
 Increase amount
 
@@ -66,7 +66,7 @@ Increase amount
 php wallet.php increaseAmount 1b1085f0-57c0-11e6-8f97-5375de0d704d USD
 ```
 
-[DecreaseAmount]
+#### DecreaseAmount
 
 Decrease amount
 
