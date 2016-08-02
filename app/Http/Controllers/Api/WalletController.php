@@ -15,6 +15,23 @@ class WalletController extends Controller
         $view = view('api/wallets',['wallets'=>$wallets]);
         return response()->json(["auth" => \Auth::check(),"view" => sprintf('%s',$view)]);
     }
+    
+    public function balance(Request $request)
+    {
+        $wallet_id = $request->input('wallet_id');
+
+        $repository = \EntityManager::getRepository('App\Capital');
+        $capitals = $repository->findBy(array('wallet_id' => $wallet_id));
+
+        $buf = array();
+
+        foreach ($capitals as $capital){
+            array_push($buf, array('amount' => $capital->getAmount(),'currency' => $capital->getCurrency()));
+        }
+
+        return response()->json(["auth" => \Auth::check(), "error" => 0, "capitals" => $buf]);
+        
+    }
 
     public function logout()
     {

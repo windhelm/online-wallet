@@ -2,12 +2,15 @@
 <?php
 
 $loader = require( __DIR__ . '/vendor/autoload.php' );
-$loader->addPsr4( 'Windhelm\\', __DIR__ . '/src/' );
+
+// set algorithm convert
+$convert_algorithm = new Windhelm\Algorithmus\AllToRubAlgorithm();
 
 $app = new Windhelm\Application(
     'http://online-wallet.app',
     $argv,
-    $argc
+    $argc,
+    $convert_algorithm
 );
 
 $app->run();

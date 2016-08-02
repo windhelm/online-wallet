@@ -29,6 +29,7 @@ Route::group(['prefix' => 'api/v1'], function() {
         // middleware
     Route::group(['middleware' => 'auth.api'], function() {
         Route::post('/wallet/status', ['uses'=> 'Api\WalletController@status']);
+        Route::post('/wallet/balance', ['uses'=> 'Api\WalletController@balance']);
         Route::post('/wallet/increaseamount', ['uses'=> 'Api\WalletController@increaseAmount']);
         Route::post('/wallet/decreaseamount', ['uses'=> 'Api\WalletController@decreaseAmount']);
     });

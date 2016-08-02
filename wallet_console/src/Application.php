@@ -2,6 +2,8 @@
 
 namespace Windhelm;
 
+use Windhelm\Algorithmus\Contract\Convert;
+
 class Application{
 
     protected $basePath;
@@ -17,14 +19,18 @@ class Application{
         "login" => "wallet/login",
         "status" => "wallet/status",
         "increaseAmount" => "wallet/increaseamount",
-        "decreaseAmount" => "wallet/decreaseamount"
+        "decreaseAmount" => "wallet/decreaseamount",
+        "balance" => "wallet/balance"
     ];
 
-    public function __construct($basePath = null,$argv,$argc)
+    protected $convert;
+
+    public function __construct($basePath = null,$argv,$argc,Convert $convert)
     {
         $this->basePath = $basePath;
         $this->argv = $argv;
         $this->argc = $argc;
+        $this->convert = $convert;
     }
 
     public function getRoute($command)
@@ -40,6 +46,11 @@ class Application{
     public function getArgv()
     {
         return $this->argv;
+    }
+
+    public function getConvertAlgorithm()
+    {
+        return $this->convert;
     }
 
     public function getArgc()
@@ -59,6 +70,20 @@ class Application{
             $command = $argv[1];
 
             switch ($command){
+                case "balance":
+
+                    if (!isset($argv[2])){
+                        echo "no specify the wallet";
+                        return false;
+                    }
+
+                    if (!isset($argv[3])){
+                        echo "no specify the currency";
+                        return false;
+                    }
+
+
+                    break;
                 case "login":
 
                     if (!isset($argv[2])){
@@ -119,6 +144,31 @@ class Application{
         $command = $argv[1];
 
         switch($command){
+            case "balance":
+
+                $data = array(
+                    'wallet_id'=> $argv[2]
+                );
+
+                $result = $this->sendRequest($this->getRoute($command),$data);
+
+                if ($result->auth){
+
+                    $algorithm = $this->getConvertAlgorithm();
+                    $algorithm->init();
+
+                    $currency = $argv[3];
+                    $capitals = $result->capitals;
+                    $result = $algorithm->convert($currency,$capitals);
+
+                    echo $argv[2]."\n"."summ: ".$result."($argv[3])";
+
+                }else{
+                    echo "error: "."no login, please login";
+                }
+
+
+                break;
             case "login":
                 $data = array(
                     'login'=> $argv[2],
