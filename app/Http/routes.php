@@ -18,3 +18,18 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+Route::resource('wallet', 'WalletController');
+
+Route::group(['prefix' => 'api/v1'], function() {
+
+    Route::post('/wallet/login', ['uses'=> 'WalletController@authenticate']);
+    Route::post('/wallet/logout', ['uses'=> 'WalletController@logout']);
+
+        // middleware
+    Route::group(['middleware' => 'auth.api'], function() {
+        Route::post('/wallet/get', ['uses'=> 'WalletController@show']);
+        Route::post('/wallet/increaseamount', ['uses'=> 'WalletController@increaseAmount']);
+        Route::post('/wallet/decreaseamount', ['uses'=> 'WalletController@decreaseAmount']);
+    });
+});
